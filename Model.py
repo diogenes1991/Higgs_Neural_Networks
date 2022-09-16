@@ -1,3 +1,9 @@
+# Turn off GPU Support 
+import os
+using_gpu = False
+if(not using_gpu):
+    os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers
@@ -9,9 +15,9 @@ import random
 class Model:
 
     def __init__(self,name,path,Dataset):
-        ilayer = layers.Dense(units = 7, input_dim = len(Dataset[0,:-4]), activation="relu")
-        layer1 = layers.Dense(units = 8, activation="relu")
-        layer2 = layers.Dense(units = 9, activation="relu")
+        ilayer = layers.Dense(units = 7, input_dim = len(Dataset[0,:-4]), activation = "relu")
+        layer1 = layers.Dense(units = 8, activation = "relu")
+        layer2 = layers.Dense(units = 9, activation = "relu")
         olayer = layers.Dense(units = 4, activation = "sigmoid")
 
         model = keras.Sequential([ilayer,layer1,layer2,olayer])
@@ -25,9 +31,9 @@ class Model:
         self.name  = name
         self.model = model
         self.path  = path
-        self.saver = tf.keras.callbacks.ModelCheckpoint(filepath =self.path, save_weights_only = True)
+        self.saver = tf.keras.callbacks.ModelCheckpoint(filepath = self.path, save_weights_only = True)
 
-    def train(self,fraction):
+    def train(self,fraction,epochs,verbose=False):
         '''
         
             Uses the first fraction of the entire dataset as training
@@ -46,7 +52,7 @@ class Model:
         self.xtest  = self.data[point:,:-4]
         self.ytest  = self.data[point:,-4:]
 
-        history = self.model.fit(x = self.xtrain, y=self.ytrain, epochs=2000, verbose = True, callbacks = [self.saver])
+        history = self.model.fit(x = self.xtrain, y=self.ytrain, epochs = epochs, verbose = True, callbacks = [self.saver])
         plt.plot(history.history["loss"])
         plt.show()
 
