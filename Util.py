@@ -1,6 +1,9 @@
 import ROOT
 import numpy as np
 
+def prob(arr):
+    return (arr[0] + arr[1] + arr[2])/sum(arr)
+
 def drawhist(name, Data, filters, function):
     boundlow = 0
     boundhigh = 0
