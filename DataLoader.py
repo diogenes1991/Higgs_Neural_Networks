@@ -3,13 +3,12 @@ from ROOT import TMath
 import random
 import numpy as np
 
-def LoadDataAndProcess(Channels, Outputs, Processing):
-   
+def LoadDataAndProcess(Channels, Outputs, Processing, MaxNumber = np.inf):
     dataset = []
     
     '''
-    Prepare Data for NN
-    Events are not filtered by LLT or HLT
+        Prepare Data for NN
+        Events are not filtered by LLT or HLT
     '''
     
     for channel in Channels:
@@ -17,7 +16,7 @@ def LoadDataAndProcess(Channels, Outputs, Processing):
         Channel = Channels[channel]
         counter = 0
         for event in Channel:
-            if counter > 50000:
+            if counter > MaxNumber:
                 break
             Photons = []
             if Channel.photon_n != 2:
@@ -44,7 +43,7 @@ def LoadDataAndProcess(Channels, Outputs, Processing):
                 data.append(Photons[i].Px())
                 data.append(Photons[i].Py())
                 data.append(Photons[i].Pz())
-            for vec in OutputMap[channel]:
+            for vec in Outputs[channel]:
                 '''
                     In addition to the input momenta and masses we
                     add the target outputs for the NN to the dataset
