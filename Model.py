@@ -87,21 +87,10 @@ class Model:
             eff /= len(difference)
             return eff*100
 
-        predtest = self.model.predict(self.xtest)
-        predtrain = self.model.predict(self.xtrain)
-        
-        process(predtest)
-        process(predtrain)
-
-        difftest = abs(predtest-self.ytest)
-        difftrain = abs(predtrain-self.ytrain)
-
-        self.effTest = computeEfficiency(difftest)
-        self.effTrain = computeEfficiency(difftrain)
-
-        print("Efficiency on Test :",self.effTest,"%")
-        print("Efficiency on Train:",self.effTrain,"%")
-
-       
-
-
+        self.x = self.data[:,:-4]
+        self.y = self.data[:,-4:]
+        pred = self.model.predict(self.x)
+        process(pred)
+        diff = abs(pred-self.y)
+        self.eff = computeEfficiency(diff)
+        print(self.name," efficiency :",self.eff,"%")
