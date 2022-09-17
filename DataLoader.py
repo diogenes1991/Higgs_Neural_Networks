@@ -36,13 +36,9 @@ def LoadDataAndProcess(Channels, Outputs, Processing, MaxNumber = np.inf):
                 Sorting Function to always pass the photons to the NN 
                 in order of decreasing energy.
             '''
-            Photons.sort(key = lambda p : -p.E())
-            data = []
-            for i in range(len(Photons)):
-                data.append(Photons[i].E() )
-                data.append(Photons[i].Px())
-                data.append(Photons[i].Py())
-                data.append(Photons[i].Pz())
+            
+            data = Processing(Photons)
+            
             for vec in Outputs[channel]:
                 '''
                     In addition to the input momenta and masses we
@@ -58,7 +54,7 @@ def LoadDataAndProcess(Channels, Outputs, Processing, MaxNumber = np.inf):
         we later want to split the data into a training and testing set.
         We also save the data into a csv file for later quick access.
     '''
+    
     random.shuffle(dataset)
     dataset = np.asarray(dataset)
-    np.savetxt('nonprocessed_data.csv', dataset, delimiter=',')
     return dataset
